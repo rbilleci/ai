@@ -2,3 +2,7 @@ rbilleci/autonomy
 rbilleci/adaptic
 rbilleci/zta
 rbilleci/hive
+rbilleci/titan-dsl
+rbilleci/fable
+rbilleci/titan-graphql
+rbilleci/titan
