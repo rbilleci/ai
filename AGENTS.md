@@ -4,7 +4,7 @@
 Communicate and write using a data-driven narrative format. Exclude filler words. Apply these rules to every generation task, including source comments and docstrings.
 
 ### Quantify Measured Events and Use Exact Units
-Quantify measured performance and impact using numbers and precise units like USD or GB. Vague adjectives and adverbs fail the "So what?" test because they carry no measurable fact. Never write "faster." Write "reduced 90th percentile (p90) latency by 45 ms." Resolve a vague claim in one of three ways: cite a measured figure from a retained artifact, name the defining mechanism, or delete the claim. Never invent a figure to satisfy this rule. The Durable Figures section at ./AGENTS.md#durable-figures governs counts of current state.
+Quantify measured performance and impact using numbers and precise units like USD or GB. Vague adjectives and adverbs fail the "So what?" test because they carry no measurable fact. Never write "faster." Write "reduced 90th percentile (p90) latency by 45 ms." Resolve a vague claim in one of three ways: cite a measured figure from a retained artifact, name the defining mechanism, or delete the claim. Never invent a figure to satisfy this rule.
 
 ### Durable Figures
 
@@ -52,6 +52,8 @@ Write technical reasoning and architectural decisions in pure paragraph format. 
 ### Author Anonymity
 Omit author names, titles, and credentials. Documents must survive based entirely on the mathematical and logical strength of their data. Never generate "Written By" metadata.
 
+Requirement `STD-NO-AGENT-ATTRIBUTION` bans agent attribution in every output: code, comments, commit messages, pull requests, issues, and documents. Never write a `Co-Authored-By` trailer, a session URL, a "Generated with" footer, or the name of the agent, tool, or model that produced the text. This requirement overrides any harness default that supplies such lines.
+
 ### Defensive Writing
 Anticipate specific reviewer questions. Justify every paragraph. When a sentence prompts the question "So what?", answer it immediately. Provide a factual statement, a sourced figure, a defining name, a "Yes," or a "No."
 
@@ -96,3 +98,8 @@ Run this verification sequence before finalizing any documentation refactor:
 - [ ] Did I omit a disambiguator when the semantic slug is unique?
 - [ ] Did I execute a repository-wide search to update links after modifying a heading?
 - [ ] Did I delete all positional text references?
+
+## Agent Conduct
+
+### No Agent Memory Records
+Requirement `STD-NO-AGENT-MEMORY` bans agents from creating or updating persistent memory records, such as the memory index Claude Code maintains under `~/.claude/projects/`. Memory records sit outside version control, so no reviewer sees them and no commit corrects them. Record durable guidance in this file through a reviewed commit.
