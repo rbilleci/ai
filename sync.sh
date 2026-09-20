@@ -3,14 +3,14 @@ set -euo pipefail
 
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 BRANCH=sync/agent-standards
-SKILL_DIRS=(.claude/skills .agents/skills)
+SKILL_DIRS=(.agents/skills .claude/skills)
 SYNCED_PATHS=(.claude .agents .codex)
 
 usage() {
   cat <<'EOF'
 Usage: sync.sh [--check] [owner/repo ...]
 
-Copies skills/std-* into .claude/skills and .agents/skills of each target,
+Copies .agents/skills/std-* into .agents/skills and .claude/skills of each target,
 merges .claude/settings.json, and adds .codex/config.toml. Targets default
 to the lines of targets.txt. Each change arrives as one pull request from
 the branch sync/agent-standards.
@@ -36,7 +36,7 @@ fi
 
 source_repo=$(git -C "$ROOT" remote get-url origin | sed -E 's#^(git@github\.com:|https://github\.com/)##; s#\.git$##')
 source_sha=$(git -C "$ROOT" rev-parse --short HEAD)
-if [[ $check -eq 0 && -n $(git -C "$ROOT" status --porcelain -- skills .claude/settings.json .codex/config.toml) ]]; then
+if [[ $check -eq 0 && -n $(git -C "$ROOT" status --porcelain -- .agents/skills .claude/settings.json .codex/config.toml) ]]; then
   echo "Commit the source files first: each pull request cites $source_repo@$source_sha." >&2
   exit 2
 fi
@@ -66,7 +66,7 @@ apply_standards() {
 
   for dest in "${SKILL_DIRS[@]}"; do
     mkdir -p "$dir/$dest"
-    for skill in "$ROOT"/skills/std-*/; do
+    for skill in "$ROOT"/.agents/skills/std-*/; do
       name=$(basename "$skill")
       rm -rf "${dir:?}/$dest/$name"
       cp -R "${skill%/}" "$dir/$dest/$name"
@@ -74,7 +74,7 @@ apply_standards() {
     for existing in "$dir/$dest"/std-*/; do
       [[ -d $existing ]] || continue
       name=$(basename "$existing")
-      [[ -d $ROOT/skills/$name ]] || notes+=("$dest/$name has no source skill; delete it by hand.")
+      [[ -d $ROOT/.agents/skills/$name ]] || notes+=("$dest/$name has no source skill; delete it by hand.")
     done
   done
 
@@ -103,7 +103,7 @@ pr_body() {
   cat <<EOF
 This pull request copies the agent standards from \`$source_repo\` at commit \`$source_sha\`. \`sync.sh\` in that repository generated it.
 
-The \`std-*\` directories under \`.claude/skills\` and \`.agents/skills\` hold the same skills for Claude Code and Codex. \`.claude/settings.json\` turns off Claude Code auto memory and the attribution lines Claude Code adds to commits and pull requests. \`.codex/config.toml\` turns off Codex memories.
+The \`std-*\` directories under \`.agents/skills\` and \`.claude/skills\` hold the same skills for Codex and Claude Code. \`.claude/settings.json\` turns off Claude Code auto memory and the attribution lines Claude Code adds to commits and pull requests. \`.codex/config.toml\` turns off Codex memories.
 
 \`sync.sh\` owns every path this pull request changes and force-pushes this branch on each run. Make edits in \`$source_repo\`, not here.
 EOF
