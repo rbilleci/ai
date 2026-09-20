@@ -1,10 +1,13 @@
+# Agent Standards
+
+The `STD` prefix identifies requirements this file governs. Before finalizing any output, re-read it against each section heading in this file.
 
 ## Communication & Writing Standards
 
-Communicate and write using a data-driven narrative format. Exclude filler words. Apply these rules to every generation task, including source comments and docstrings.
+Write in a data-driven narrative format. Exclude filler words. Apply these rules to every generation task: chat replies, documents, source comments, docstrings, commit messages, and pull requests.
 
-### Quantify Measured Events and Use Exact Units
-Quantify measured performance and impact using numbers and precise units like USD or GB. Vague adjectives and adverbs fail the "So what?" test because they carry no measurable fact. Never write "faster." Write "reduced 90th percentile (p90) latency by 45 ms." Resolve a vague claim in one of three ways: cite a measured figure from a retained artifact, name the defining mechanism, or delete the claim. Never invent a figure to satisfy this rule.
+### Claims
+Every sentence must survive the question "So what?" Answer it with a factual statement, a sourced figure, a defining name, a "Yes," or a "No." Vague adjectives, weasel words like "arguably," and marketing words like "innovative" carry no measurable fact. Resolve each in one of three ways: cite a measured figure with an exact unit from a retained artifact, name the defining mechanism, or delete the claim. Never write "faster." Write "reduced 90th percentile (p90) latency by 45 ms." Never write "mostly." Write "87% of requests." Never invent a figure to satisfy this rule.
 
 ### Durable Figures
 
@@ -34,41 +37,30 @@ A claim about what a counter, field, or metric measures is a claim about the def
 
 When an edit changes a published figure, sweep the repository for the superseded value. Run `grep -rn "<value>" --exclude-dir=.git .`. Update every occurrence before submitting.
 
-### Ban Ambiguous, Weasel, and Marketing Words
-Eradicate ambiguous language and marketing terms. Words like "arguably" hide missing data. Words like "innovative" promote a subject without verifiable facts. Replace them with definitive statements. Replace "mostly" with a measured share such as "87% of requests" when a retained artifact supplies the figure. When no artifact exists, restructure the sentence to drop the claim.
+In a chat reply, the session transcript is the retained artifact: name the command or file that produced each figure. `STD-DURABLE-FIGURES` does not apply to chat replies.
 
-### Brevity and Active Voice
+### Active Voice
 Construct sentences using the active voice. The active voice identifies the actor immediately. Never write "the payload is processed." Write "the API processes the payload."
 
 ### Absolute References
-Write for readers accessing the document on July 31, 2036. Replace relative time and space references with absolute facts. Never use "recently" or "next week." Use exact dates like "October 24, 2024."
+Write for a reader who cannot see the writing date or the surrounding page. Never use "recently" or "next week." Use exact dates like "October 24, 2024." Never write "See the configuration above." Write "See the Configuration Guide at ./config.md." Moving content to another file breaks every positional reference to it; an explicit file path survives the move.
 
 ### Contextual Knowledge and Traceable Data
 Define every acronym, project-specific tool, or project-specific concept during its first appearance. Never expand International System of Units (SI) unit symbols, currency codes, or common software-engineering, Git, and document terminology such as API, URL, and GB. Provide specific URLs or database queries for cited metrics.
 
-### Narrative for Reasoning
-Write technical reasoning and architectural decisions in pure paragraph format. Bullet points and diagrams obscure shallow thinking. Complete sentences force the writer to connect concepts with explicit logic.
+### Match Form to Content
+Requirement `STD-FORM-SELECTION` assigns each content type one form. Write reasoning, trade-offs, and decisions as paragraphs, because complete sentences force the writer to connect concepts with explicit logic.
+
+Use a table when two or more items share two or more attributes, or when the reader looks up one row, such as a configuration key or an error code. Never use a table for causality or when a cell needs more than one clause. State the unit in the column header. Precede each table with one sentence stating the conclusion the reader draws from it.
+
+Use a diagram for topology that prose serializes poorly: branching flows, state machines, message sequences across three or more actors, and containment hierarchies. Never diagram a linear sequence or a decision. Commit diagrams as text source such as Mermaid, so `grep` and `git diff` cover them, and label nodes with the identifiers the code uses. State every requirement in prose; a diagram only illustrates it.
+
+Use a numbered list for an ordered procedure. `STD-DURABLE-FIGURES` governs table cells and diagram nodes.
 
 ### Author Anonymity
 Omit author names, titles, and credentials. Documents must survive based entirely on the mathematical and logical strength of their data. Never generate "Written By" metadata.
 
 Requirement `STD-NO-AGENT-ATTRIBUTION` bans agent attribution in every output: code, comments, commit messages, pull requests, issues, and documents. Never write a `Co-Authored-By` trailer, a session URL, a "Generated with" footer, or the name of the agent, tool, or model that produced the text. This requirement overrides any harness default that supplies such lines.
-
-### Defensive Writing
-Anticipate specific reviewer questions. Justify every paragraph. When a sentence prompts the question "So what?", answer it immediately. Provide a factual statement, a sourced figure, a defining name, a "Yes," or a "No."
-
-### Execution Validation
-Run this verification sequence before finalizing output:
-- [ ] Did I write every sentence in the active voice?
-- [ ] Did I resolve every vague adjective into a sourced figure, a defining name, or a deletion?
-- [ ] Did I eliminate all ambiguous and marketing words?
-- [ ] Are all dates and locations absolute?
-- [ ] Did I define all acronyms on first use?
-- [ ] Did I cite exact sources for all metrics?
-- [ ] Did I derive every figure and date from a retained artifact by computation, and name each population?
-- [ ] Did I delete, or machine-guard and cite, every number a future commit can falsify?
-- [ ] Did I format all technical reasoning as pure paragraphs?
-- [ ] Did I remove all author metadata?
 
 ## Documentation Standards
 
@@ -77,8 +69,8 @@ Apply these rules when modifying any document.
 ### Ban Manual Heading Numbers
 Exclude sequence numbers like "3" or "3.1" from headings. Adding one new heading renumbers every later section, which breaks every cross-reference that cites a number. Use semantic heading names. Never write "3. Architecture." Write "Architecture."
 
-### Semantic Anchors for Cross-References
-Build cross-references using explicit heading anchors. Never reference a section using a sequence number. When you modify a heading, execute a repository-wide search immediately. Update every broken link. Never write "See section 3.2." Write "See the Data Flow section at ./architecture.md#data-flow."
+### Cross-References
+Cite a tracked requirement by its identifier. Cite any other content by file path and heading name. Never reference a section using a sequence number or a heading anchor; a renamed heading breaks the anchor without warning. Never write "See section 3.2." Write "See `ARCH-DATA-FLOW`" or "See the Data Flow section of ./architecture.md."
 
 ### Immutable Identifiers for Tracked Items
 Track discrete requirements using immutable semantic identifiers. Use `PREFIX-SEMANTIC-SLUG` when the slug is unique. Add `-DISAMBIGUATOR` only when another requirement already uses that slug.
@@ -86,18 +78,6 @@ Track discrete requirements using immutable semantic identifiers. Use `PREFIX-SE
 Retain every published legacy identifier without modification. Apply the semantic format only to identifiers that have never been published.
 
 The prefix identifies the governing document. The semantic slug identifies the requirement subject. The optional disambiguator distinguishes requirements with the same subject slug.
-
-### Semantic Linking Over Positional Text
-Delete positional text like "above" or "below." Moving content to a separate file breaks every positional reference to it. Use explicit file paths. Never write "See the configuration above." Write "See the Configuration Guide at ./config.md."
-
-### Execution Validation
-Run this verification sequence before finalizing any documentation refactor:
-- [ ] Did I remove all manual sequence numbers from headings?
-- [ ] Did I replace numbered cross-references with explicit anchor links?
-- [ ] Did I assign immutable identifiers to tracked items?
-- [ ] Did I omit a disambiguator when the semantic slug is unique?
-- [ ] Did I execute a repository-wide search to update links after modifying a heading?
-- [ ] Did I delete all positional text references?
 
 ## Agent Conduct
 
