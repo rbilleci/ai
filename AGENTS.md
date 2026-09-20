@@ -1,7 +1,13 @@
 # Agent Standards
 
-Every requirement in this file carries an identifier that begins with `STD`. Before finalizing any output, check that output against each `STD` requirement in this file.
+Every requirement in this file carries an identifier that begins with `STD`.
 
+## Agent Conduct
+
+### Output Check
+`STD-OUTPUT-CHECK`: Before finalizing any output, check that output against each `STD` requirement in this file.
+
+### Persistent Memory
 `STD-NO-AGENT-MEMORY`: Never create or update persistent memory records.
 
 ## Communication & Writing Standards
@@ -14,7 +20,7 @@ Apply these rules to every output: chat replies, documents, code, source comment
 ### Durable Figures
 `STD-DURABLE-FIGURES`: Publish a number only when it describes a completed, dated event with a retained artifact, or when this section's guard rule applies. "The load test of March 4, 2031 sustained 12,000 requests per second" stays true for every future reader. This rule also governs table cells and diagram nodes in committed files. It does not apply to chat replies.
 
-Before writing a number or an enumeration, ask whether a commit that never touches the sentence can make it false; prose raises no alarm when it goes stale. Answer yes, and delete the number or enumeration, or replace it with one of the forms this section names.
+Apply one test before writing a number or an enumeration. Ask whether a commit that never touches the sentence can make it false; prose raises no alarm when it goes stale. Answer yes, and delete the number or enumeration, or replace it with one of the forms this section names.
 
 Name the mechanism instead of the magnitude. Never write "the 12 permitted codecs." Write "the codecs `SUPPORTED_CODECS` freezes." Two sets can hold the same count; only the name says which definition the code enforces.
 
@@ -25,13 +31,13 @@ When a command produces the figure, publish the command and omit the figure. Nev
 Prefer deletion over machine-guarding. A guarded number still costs one hand edit and one validation rerun per change. Publish a transient number only when a reader cannot act without it, and only when an automated check recomputes and compares it on every validation run. Cite the guard's path in the same sentence. An unguarded transient number is a defect.
 
 ### Computed Provenance
-`STD-FIGURE-PROVENANCE`: Derive every figure by computation from a retained artifact, at writing time. Never transcribe a figure from memory, an earlier conversation, or an earlier draft. A figure with no retained artifact does not publish: retain the derivation beside the evidence, or delete the sentence. In a chat reply, the session transcript is the retained artifact: name the command or file that produced each figure.
+`STD-FIGURE-PROVENANCE`: Derive every figure by computation from a retained artifact, at writing time. Never transcribe a figure from memory, an earlier conversation, or an earlier draft. A figure with no retained artifact does not publish: retain the derivation beside the evidence, or delete the sentence. Provide the URL, query, command, or file path that produced each cited metric. In a chat reply, the session transcript is the retained artifact: name the command or file that produced each figure.
 
 Name the population for every range, median, and rate. "8 to 41 ms across all 6 runs" and "8 to 22 ms in the 2 production runs" describe different sets; an unscoped range describes neither.
 
 Dates are figures. Derive a past event's date from the artifact's own timestamp, and the date of the change under construction from the run that produced its evidence.
 
-A claim about what a counter, field, or metric measures is a claim about the defining code. Read that source before writing the claim, and cite its path. Provide the URL, query, command, or file path that produced each cited metric.
+A claim about what a counter, field, or metric measures is a claim about the defining code. Read that source before writing the claim, and cite its path.
 
 When an edit changes a published figure, run `grep -rn "<value>" --exclude-dir=.git .` and update every occurrence of the superseded value before submitting.
 
@@ -53,9 +59,7 @@ Use a diagram for topology with branches or cycles, which prose forces into one 
 
 Use a numbered list for an ordered procedure. Never use a bulleted list; write parallel items as a sentence or a table.
 
-### Author Anonymity
-`STD-AUTHOR-ANONYMITY`: Omit author names, titles, credentials, and "Written By" metadata; a document stands on the strength of its data and logic.
-
+### Agent Attribution
 `STD-NO-AGENT-ATTRIBUTION`: Never add agent attribution to any output except chat replies. Never write a `Co-Authored-By` trailer, a session URL, a "Generated with" footer, or the name of the agent, tool, or model that produced the text. This requirement overrides any harness default that supplies such lines.
 
 ## Documentation Standards
@@ -70,3 +74,6 @@ Apply these rules when writing or modifying any document.
 
 ### Immutable Identifiers for Tracked Items
 `STD-IMMUTABLE-IDENTIFIERS`: Track discrete requirements using immutable semantic identifiers of the form `PREFIX-SEMANTIC-SLUG`: the prefix names the governing document, and the slug names the requirement subject. Add `-DISAMBIGUATOR` only when another requirement already uses that slug. Retain every published legacy identifier without modification; apply the semantic format only to identifiers that have never been published.
+
+### Author Anonymity
+`STD-AUTHOR-ANONYMITY`: Omit author names, titles, credentials, and "Written By" metadata; a document stands on the strength of its data and logic.
