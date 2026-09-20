@@ -2,7 +2,7 @@
 
 Every requirement in this file carries an identifier that begins with `STD`. Before finalizing any output, check that output against each `STD` requirement in this file.
 
-`STD-NO-AGENT-MEMORY`: Never create or update persistent memory records. Memory records sit outside version control, so no reviewer sees them and no commit corrects them.
+`STD-NO-AGENT-MEMORY`: Never create or update persistent memory records.
 
 ## Communication & Writing Standards
 
