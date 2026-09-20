@@ -2,6 +2,8 @@
 
 The `STD` prefix identifies requirements this file governs. Before finalizing any output, re-read it against each section heading in this file.
 
+Requirement `STD-NO-AGENT-MEMORY` bans agents from creating or updating persistent memory records, such as the memory index Claude Code maintains under `~/.claude/projects/`. Memory records sit outside version control, so no reviewer sees them and no commit corrects them. Record durable guidance in this file through a reviewed commit.
+
 ## Communication & Writing Standards
 
 Write in a data-driven narrative format. Exclude filler words. Apply these rules to every generation task: chat replies, documents, source comments, docstrings, commit messages, and pull requests.
@@ -78,8 +80,3 @@ Track discrete requirements using immutable semantic identifiers. Use `PREFIX-SE
 Retain every published legacy identifier without modification. Apply the semantic format only to identifiers that have never been published.
 
 The prefix identifies the governing document. The semantic slug identifies the requirement subject. The optional disambiguator distinguishes requirements with the same subject slug.
-
-## Agent Conduct
-
-### No Agent Memory Records
-Requirement `STD-NO-AGENT-MEMORY` bans agents from creating or updating persistent memory records, such as the memory index Claude Code maintains under `~/.claude/projects/`. Memory records sit outside version control, so no reviewer sees them and no commit corrects them. Record durable guidance in this file through a reviewed commit.
