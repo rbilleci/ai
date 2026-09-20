@@ -4,7 +4,7 @@
 Communicate and write using a data-driven narrative format. Exclude filler words. Apply these rules to every generation task, including source comments and docstrings.
 
 ### Quantify Measured Events and Use Exact Units
-Quantify measured performance and impact using numbers and precise units like United States Dollars (USD) or Gigabytes (GB). Vague adjectives and adverbs fail the "So what?" test because they carry no measurable fact. Never write "faster." Write "reduced 90th percentile (p90) latency by 45 milliseconds (ms)." Resolve a vague claim in one of three ways: cite a measured figure from a retained artifact, name the defining mechanism, or delete the claim. Never invent a figure to satisfy this rule. The Durable Figures section at ./standards.md#durable-figures governs counts of current state.
+Quantify measured performance and impact using numbers and precise units like USD or GB. Vague adjectives and adverbs fail the "So what?" test because they carry no measurable fact. Never write "faster." Write "reduced 90th percentile (p90) latency by 45 ms." Resolve a vague claim in one of three ways: cite a measured figure from a retained artifact, name the defining mechanism, or delete the claim. Never invent a figure to satisfy this rule. The Durable Figures section at ./AGENTS.md#durable-figures governs counts of current state.
 
 ### Durable Figures
 
@@ -16,7 +16,7 @@ Name the mechanism instead of the magnitude. Never write "the 12 permitted codec
 
 The test covers enumerations. A sentence naming every current module, flag, or dependency breaks when someone adds one. Cite the directory, manifest, or command that defines the set.
 
-State the command instead of its output. Never write "412 tests pass." Write "run the project gate's validate operation; its output states the count."
+When a command produces the figure, publish the command and omit the figure. A test count, a line count, and a dependency count each change with the next commit; the command that reports them does not. Never write "412 tests pass." Write "`make test` reports the passing count."
 
 Prefer deletion over machine-guarding. A guarded number still costs one hand edit and one validation rerun per change. Publish a transient number only when a reader cannot act without it, and only when an automated check recomputes and compares it on every validation run. Cite the guard's path in the same sentence. An unguarded transient number is a defect.
 
@@ -32,19 +32,19 @@ A figure with no retained artifact does not publish. Retain the derivation besid
 
 A claim about what a counter, field, or metric measures is a claim about the defining code. Read that source before writing the claim, and cite its path.
 
-When an edit changes a published figure, sweep the repository for the superseded value. Run `grep -rn "<value>" --exclude-dir=.git .`. Never filter with `grep -v ".git/"`, which also drops document lines citing `.git/sap/` evidence paths and hides stale figures. Update every occurrence before submitting.
+When an edit changes a published figure, sweep the repository for the superseded value. Run `grep -rn "<value>" --exclude-dir=.git .`. Update every occurrence before submitting.
 
 ### Ban Ambiguous, Weasel, and Marketing Words
 Eradicate ambiguous language and marketing terms. Words like "arguably" hide missing data. Words like "innovative" promote a subject without verifiable facts. Replace them with definitive statements. Replace "mostly" with a measured share such as "87% of requests" when a retained artifact supplies the figure. When no artifact exists, restructure the sentence to drop the claim.
 
 ### Brevity and Active Voice
-Construct sentences using the active voice. The active voice identifies the actor immediately. Never write "the payload is processed." Write "the Application Programming Interface (API) processes the payload."
+Construct sentences using the active voice. The active voice identifies the actor immediately. Never write "the payload is processed." Write "the API processes the payload."
 
 ### Absolute References
 Write for readers accessing the document on July 31, 2036. Replace relative time and space references with absolute facts. Never use "recently" or "next week." Use exact dates like "October 24, 2024."
 
 ### Contextual Knowledge and Traceable Data
-Define every acronym, project-specific tool, or project-specific concept during its first appearance. Agents may assume common software-engineering, Git, and document terminology. Provide specific Uniform Resource Locators (URLs) or database queries for cited metrics.
+Define every acronym, project-specific tool, or project-specific concept during its first appearance. Never expand International System of Units (SI) unit symbols, currency codes, or common software-engineering, Git, and document terminology such as API, URL, and GB. Provide specific URLs or database queries for cited metrics.
 
 ### Narrative for Reasoning
 Write technical reasoning and architectural decisions in pure paragraph format. Bullet points and diagrams obscure shallow thinking. Complete sentences force the writer to connect concepts with explicit logic.
