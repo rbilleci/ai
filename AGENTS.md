@@ -73,3 +73,8 @@ Use a numbered list for an ordered procedure. Never use a bulleted list; write p
 
 ### Author Anonymity
 `STD-AUTHOR-ANONYMITY`: Omit author names, titles, credentials, and "Written By" metadata; a document stands on the strength of its data and logic.
+
+## Code Standards
+
+### Code Comments
+`STD-CODE-COMMENTS`: Write a comment or docstring only when a reader who has only the source code would misuse or break the code without it. Never write a comment that restates the code, narrates the change, or holds commented-out code. Never reference a ticket, task, pull request, document, URL, standard, or requirement identifier in a comment, docstring, or symbol name; a comment may name a symbol or code file in the same repository. State the fact the reference would have supplied, and put the reference in the commit message. Never write "// See PROJ-1234." or "// Per `STD-CLAIMS`." Write "// The upstream parser rejects a trailing comma." In source files this rule takes precedence: where another rule requires a reference this rule bans, delete the content that needs it. This rule exempts license headers and directives a tool reads.
