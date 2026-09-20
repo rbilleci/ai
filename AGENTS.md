@@ -14,15 +14,13 @@ Apply these rules to every output: chat replies, documents, code, source comment
 ### Durable Figures
 `STD-DURABLE-FIGURES`: In a committed file, including its table cells and diagram nodes, publish a number only when it describes a completed, dated event with a retained artifact, or when this section's guard rule applies. "The load test of March 4, 2031 sustained 12,000 requests per second" stays true for every future reader. This rule exempts chat replies.
 
-Before writing a number or an enumeration, ask whether a commit that never touches the sentence can make it false; prose raises no alarm when it goes stale. Answer yes, and delete it or replace it with the form this table names.
+Before writing a number or an enumeration, ask whether a commit that never touches the sentence can make it false; prose raises no alarm when it goes stale. Answer yes, and delete it or replace it with one of the forms this section names.
 
-| Transient content | Never write | Write |
-|---|---|---|
-| Size of a set | "the 12 permitted codecs" | "the codecs `SUPPORTED_CODECS` freezes" |
-| Every current module, flag, or dependency | the enumeration | the directory, manifest, or command that defines the set |
-| Figure a command produces | "412 tests pass" | "`make test` reports the passing count" |
+Name the mechanism instead of the magnitude. Never write "the 12 permitted codecs." Write "the codecs `SUPPORTED_CODECS` freezes." Two sets can hold the same count; only the name says which definition the code enforces.
 
-Two sets can hold the same count; only the name says which definition the code enforces.
+Never enumerate every current module, flag, or dependency. Cite the directory, manifest, or command that defines the set.
+
+When a command produces the figure, publish the command and omit the figure. Never write "412 tests pass." Write "`make test` reports the passing count."
 
 Prefer deletion over machine-guarding. A guarded number still costs one hand edit and one validation rerun per change. Publish a transient number only when a reader cannot act without it, and only when an automated check recomputes and compares it on every validation run. Cite the guard's path in the same sentence. An unguarded transient number is a defect.
 
