@@ -5,13 +5,17 @@ ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 BRANCH=sync/agent-standards
 SKILL_DIRS=(.agents/skills .claude/skills)
 SYNCED_PATHS=(.claude .agents .codex)
+# A skill directory belongs to the sync only when it holds this file; the sync never replaces one without it.
+MARKER=.synced-from
 
 usage() {
   cat <<'EOF'
 Usage: sync.sh [--check] [owner/repo ...]
 
-Copies .agents/skills/std-* into .agents/skills and .claude/skills of each target,
-merges .claude/settings.json, and adds .codex/config.toml. Targets default
+Copies each skill in .agents/skills into .agents/skills and .claude/skills of
+each target, merges .claude/settings.json, and adds .codex/config.toml. The
+sync marks each skill it copies with a .synced-from file and leaves alone any
+skill directory of the same name that lacks the file. Targets default
 to the lines of targets.txt. Each change arrives as one pull request from
 the branch sync/agent-standards.
 
@@ -66,13 +70,18 @@ apply_standards() {
 
   for dest in "${SKILL_DIRS[@]}"; do
     mkdir -p "$dir/$dest"
-    for skill in "$ROOT"/.agents/skills/std-*/; do
+    for skill in "$ROOT"/.agents/skills/*/; do
       name=$(basename "$skill")
+      if [[ -e $dir/$dest/$name && ! -f $dir/$dest/$name/$MARKER ]]; then
+        notes+=("$dest/$name exists and the sync does not own it; the sync left it alone.")
+        continue
+      fi
       rm -rf "${dir:?}/$dest/$name"
       cp -R "${skill%/}" "$dir/$dest/$name"
+      printf '%s\n' "$source_repo" > "$dir/$dest/$name/$MARKER"
     done
-    for existing in "$dir/$dest"/std-*/; do
-      [[ -d $existing ]] || continue
+    for existing in "$dir/$dest"/*/; do
+      [[ -f $existing$MARKER ]] || continue
       name=$(basename "$existing")
       [[ -d $ROOT/.agents/skills/$name ]] || notes+=("$dest/$name has no source skill; delete it by hand.")
     done
@@ -103,9 +112,9 @@ pr_body() {
   cat <<EOF
 This pull request copies the agent standards from \`$source_repo\` at commit \`$source_sha\`. \`sync.sh\` in that repository generated it.
 
-The \`std-*\` directories under \`.agents/skills\` and \`.claude/skills\` hold the same skills for Codex and Claude Code. \`.claude/settings.json\` turns off Claude Code auto memory and the attribution lines Claude Code adds to commits and pull requests. \`.codex/config.toml\` turns off Codex memories.
+The skill directories that hold a \`$MARKER\` file under \`.agents/skills\` and \`.claude/skills\` carry the same skills for Codex and Claude Code. \`.claude/settings.json\` turns off Claude Code auto memory and the attribution lines Claude Code adds to commits and pull requests. \`.codex/config.toml\` turns off Codex memories.
 
-\`sync.sh\` owns every path this pull request changes and force-pushes this branch on each run. Make edits in \`$source_repo\`, not here.
+\`sync.sh\` replaces each marked skill directory and force-pushes this branch on each run. Make edits in \`$source_repo\`, not here.
 EOF
   if [[ ${#notes[@]} -gt 0 ]]; then
     printf '\nThe sync left these items for a person to resolve.\n\n'
