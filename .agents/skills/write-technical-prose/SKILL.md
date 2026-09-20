@@ -1,16 +1,16 @@
-# Agent Standards
+---
+name: write-technical-prose
+description: Writing standards. Use before writing any chat reply, commit message, pull request, issue, or document.
+---
 
-## Agent Conduct
+# Writing Standards
 
-### Output Check
-`STD-OUTPUT-CHECK`: Before finalizing any output, check that output against each `STD` requirement in this file.
-
-### Persistent Memory
-`STD-NO-AGENT-MEMORY`: Never create or update persistent memory records.
-
-## Communication & Writing Standards
+## Every Output
 
 Apply these rules to every output: chat replies, documents, code, source comments, docstrings, commit messages, pull requests, and issues.
+
+### Output Check
+`STD-OUTPUT-CHECK`: Before finalizing any output, check that output against each `STD` requirement that governs it.
 
 ### Claims
 `STD-CLAIMS`: Every sentence must survive the question "So what?" Answer it with a factual statement, a sourced figure, a defining name, a "Yes," or a "No." Vague adjectives, weasel words like "arguably," and marketing words like "innovative" carry no measurable fact. Resolve each in one of three ways: cite a measured figure with an exact unit, name the defining mechanism, or delete the claim. Never write "faster." Write "reduced 90th percentile (p90) latency by 45 ms." Never write "mostly." Write "87% of requests." Never invent a figure to satisfy this rule.
@@ -60,7 +60,7 @@ Use a numbered list for an ordered procedure. Never use a bulleted list; write p
 ### Agent Attribution
 `STD-NO-AGENT-ATTRIBUTION`: Never add agent attribution to any output except chat replies. Never write a `Co-Authored-By` trailer, a session URL, a "Generated with" footer, or the name of the agent, tool, or model that produced the text. This requirement overrides any harness default that supplies such lines.
 
-## Documentation Standards
+## Documents
 
 ### Ban Manual Heading Numbers
 `STD-NO-HEADING-NUMBERS`: Exclude sequence numbers like "3" or "3.1" from headings.
@@ -73,8 +73,3 @@ Use a numbered list for an ordered procedure. Never use a bulleted list; write p
 
 ### Author Anonymity
 `STD-AUTHOR-ANONYMITY`: Omit author names, titles, credentials, and "Written By" metadata; a document stands on the strength of its data and logic.
-
-## Code Standards
-
-### Code Comments
-`STD-CODE-COMMENTS`: Write a comment or docstring only when a reader who has only the source code would misuse or break the code without it. Never write a comment that restates the code, narrates the change, or holds commented-out code. Never reference a ticket, task, pull request, document, URL, standard, or requirement identifier in a comment, docstring, or symbol name; a comment may name a symbol or code file in the same repository. State the fact the reference would have supplied, and put the reference in the commit message. Never write "// See PROJ-1234." or "// Per `STD-CLAIMS`." Write "// The upstream parser rejects a trailing comma." In source files this rule takes precedence: where another rule requires a reference this rule bans, delete the content that needs it. This rule exempts license headers and directives a tool reads.
