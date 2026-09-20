@@ -2,7 +2,7 @@
 
 The `STD` prefix identifies requirements this file governs. Before finalizing any output, re-read it against each section heading in this file.
 
-`STD-NO-AGENT-MEMORY`: Never create or update persistent memory records, such as the memory index Claude Code maintains under `~/.claude/projects/`. Memory records sit outside version control, so no reviewer sees them and no commit corrects them. Record durable guidance in this file through a reviewed commit.
+`STD-NO-AGENT-MEMORY`: Never create or update persistent memory records, such as the memory index an agent harness maintains under `~/.claude/projects/`. Memory records sit outside version control, so no reviewer sees them and no commit corrects them. Record durable guidance in this file through a reviewed commit.
 
 ## Communication & Writing Standards
 
