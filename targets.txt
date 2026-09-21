@@ -6,3 +6,4 @@ rbilleci/titan-dsl
 rbilleci/fable
 rbilleci/titan-graphql
 rbilleci/titan
+rbilleci/titan-new
