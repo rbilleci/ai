@@ -133,21 +133,33 @@ for repo in "${targets[@]}"; do
   dir=$workdir/${repo//\//__}
   gh repo clone "$repo" "$dir" -- --depth 1 --quiet
   apply_standards "$dir"
+  tracked=()
+  for path in "${SYNCED_PATHS[@]}"; do
+    if git -C "$dir" check-ignore -q "$path"; then
+      notes+=("The target's .gitignore ignores $path; the sync left it out.")
+    else
+      tracked+=("$path")
+    fi
+  done
   [[ ${#notes[@]} -eq 0 ]] || printf '%s: note: %s\n' "$repo" "${notes[@]}"
+  if [[ ${#tracked[@]} -eq 0 ]]; then
+    echo "$repo: skipped; the target's .gitignore ignores every synced path."
+    continue
+  fi
 
-  if [[ -z $(git -C "$dir" status --porcelain -- "${SYNCED_PATHS[@]}") ]]; then
+  if [[ -z $(git -C "$dir" status --porcelain -- "${tracked[@]}") ]]; then
     echo "$repo: in sync with $source_repo@$source_sha."
     continue
   fi
   if [[ $check -eq 1 ]]; then
     drift=1
     echo "$repo: differs from $source_repo@$source_sha:"
-    git -C "$dir" status --short --untracked-files=all -- "${SYNCED_PATHS[@]}" | sed 's/^/  /'
+    git -C "$dir" status --short --untracked-files=all -- "${tracked[@]}" | sed 's/^/  /'
     continue
   fi
 
   git -C "$dir" checkout -q -b "$BRANCH"
-  git -C "$dir" add -A -- "${SYNCED_PATHS[@]}"
+  git -C "$dir" add -A -- "${tracked[@]}"
   git -C "$dir" commit -q -m "Sync agent standards from $source_repo@$source_sha"
 
   if git -C "$dir" fetch -q --depth 1 origin "$BRANCH" 2>/dev/null \
