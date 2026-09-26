@@ -7,3 +7,4 @@ rbilleci/fable
 rbilleci/titan-graphql
 rbilleci/titan
 rbilleci/titan-new
+rbilleci/index
